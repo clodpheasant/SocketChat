@@ -14,6 +14,7 @@ public class ClientThread extends Thread {
 	public ClientThread(Client client, Socket socket) {
 		this.client = client;
 		this.socket = socket;
+		
 		this.open();
 		this.start();
 	}
@@ -46,8 +47,6 @@ public class ClientThread extends Thread {
 				client.handle((String) inStream.readObject());
 			} catch (IOException e) {
 				client.stop();
-				System.out.println("error listening");
-				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				System.out.println("error handling input class");
 				e.printStackTrace();

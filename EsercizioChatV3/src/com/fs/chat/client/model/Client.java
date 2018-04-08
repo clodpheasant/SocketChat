@@ -61,6 +61,7 @@ public class Client {
 	}
 	
 	public void stop() {
+		clientThread.close();
 		try {
 			if (inStream != null) inStream.close();
 			if (outStream != null) outStream.close();
@@ -69,6 +70,5 @@ public class Client {
 			System.out.println("error closing");
 			e.printStackTrace();
 		}
-		clientThread.close();
 	}
 }

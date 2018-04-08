@@ -53,5 +53,9 @@ public class ChatWindowController {
 		model.getClient().send(msg);
 		messageText.setText("");
 	}
+	
+	public void closeThreads() {
+		model.getClient().stop();
+	}
 
 }
