@@ -12,11 +12,9 @@ import com.fs.chat.Constants;
 
 public class Server implements Runnable {
 	
-	//private ServerThread[] serverThreads = new ServerThread[50];
 	private Map<Integer, ServerThread> serverThreads;
 	private ServerSocket server;
 	private Thread thread;
-	private int clientsCount = 0;
 	
 	private List<String> completeChatHistory;
 	
@@ -50,39 +48,11 @@ public class Server implements Runnable {
 		thread = null;
 	}
 	
-	/*private int findClient(int ID) {
-		for (int i = 0; i < clientsCount; i++) {
-			if (serverThreads[i].getID() == ID) {
-				return i;
-			}
-		}
-		return -1;
-	}*/
-	
 	public synchronized void remove(int ID) {
-		/*int i = findClient(ID);
-		if (i >= 0) {
-			ServerThread toBeRemoved = serverThreads[i];
-			System.out.println("removing client " + ID + " at " + i);
-			if (i > clientsCount - 1) {
-				for (int j = i + 1; j < clientsCount; j++) {
-					serverThreads[j-1] = serverThreads[j];
-				}
-			}
-			clientsCount--;
-			try {
-				toBeRemoved.close();
-			} catch (IOException e) {
-				System.out.println("error closing");
-				e.printStackTrace();
-			}
-		}*/
-		
 		ServerThread toBeRemoved = serverThreads.get(ID);
 		if (toBeRemoved != null) {
 			System.out.println("removing client " + ID);
 			serverThreads.remove(ID);
-			clientsCount--;
 			try {
 				toBeRemoved.close();
 			} catch (IOException e) {
@@ -100,9 +70,6 @@ public class Server implements Runnable {
 			String msg = input;
 			// adds message to chat history, to send it to newly connected clients
 			completeChatHistory.add(msg);
-			/*for (int i = 0; i < clientsCount; i++) {
-				serverThreads[i].send(msg);
-			}*/
 			for (ServerThread sender : serverThreads.values()) {
 				sender.send(msg);
 			}
@@ -110,33 +77,12 @@ public class Server implements Runnable {
 	}
 	
 	private void addThread(Socket socket) {
-		/*if (clientsCount < serverThreads.length) {
-			System.out.println("client accepted: " + socket);
-			ServerThread serverThread = new ServerThread(this, socket);
-			serverThreads[clientsCount] = serverThread;
-			try {
-				serverThread.open();
-				serverThread.start();
-				clientsCount++;
-				// sends all messages from history
-				for (String msg : completeChatHistory) {
-					serverThread.send(msg);
-				}
-			} catch (IOException e) {
-				System.out.println("error opening thread");
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("client refused: maximum of " + serverThreads.length + "reached");
-		}*/
-
 		System.out.println("client accepted: " + socket);
 		ServerThread tobeAdded = new ServerThread(this, socket);
 		serverThreads.put(socket.getPort(), tobeAdded);
 		try {
 			tobeAdded.open();
 			tobeAdded.start();
-			clientsCount++;
 			// sends all messages from history
 			for (String msg : completeChatHistory) {
 				tobeAdded.send(msg);
