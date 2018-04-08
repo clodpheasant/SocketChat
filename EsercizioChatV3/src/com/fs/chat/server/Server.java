@@ -63,16 +63,11 @@ public class Server implements Runnable {
 	}
 	
 	public synchronized void handle(int ID, String input) {
-		if (input.equals("bye")) {
-			serverThreads.get(ID).send("bye");
-			remove(ID);
-		} else {
-			String msg = input;
-			// adds message to chat history, to send it to newly connected clients
-			completeChatHistory.add(msg);
-			for (ServerThread sender : serverThreads.values()) {
-				sender.send(msg);
-			}
+		String msg = input;
+		// adds message to chat history, to send it to newly connected clients
+		completeChatHistory.add(msg);
+		for (ServerThread sender : serverThreads.values()) {
+			sender.send(msg);
 		}
 	}
 	
