@@ -27,7 +27,7 @@ public class MainApp extends Application {
 	private ChatModel model;
 	
 	@Override
-	public void start(Stage primaryStage) throws IOException, URISyntaxException {
+	public void start(Stage primaryStage) throws IOException {
 		// giving a random name to the user
 		String name = Constants.getRandomName();
 		

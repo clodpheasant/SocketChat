@@ -59,6 +59,8 @@ public class ChatWindowController {
 								text.setFill(Color.GREEN);
 							} else if (message.equals(Constants.GOODBYE)) {
 								text.setFill(Color.DARKORANGE);
+							} else if (message.equals(Constants.NO_CONNECTION)) {
+								text.setFill(Color.RED);
 							} else {
 								int endOfName = message.indexOf(':');
 								if (endOfName >= 0) {
@@ -99,7 +101,9 @@ public class ChatWindowController {
 	 * Closes spawned threads in order to quit the application correctly.
 	 */
 	public void closeThreads() {
-		model.getClient().stop();
+		if (model.getClient() != null) {
+			model.getClient().stop();
+		}
 	}
 
 }

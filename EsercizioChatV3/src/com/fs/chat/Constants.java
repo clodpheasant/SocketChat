@@ -21,6 +21,7 @@ public class Constants {
 	
 	public static final String WELCOME = "someone new! :)";
 	public static final String GOODBYE = "someone left :(";
+	public static final String NO_CONNECTION = "Couldn't connect to the server.";
 	
 	public static String getRandomName() {
 		return adjectives[r.nextInt(adjectives.length)]
