@@ -16,11 +16,9 @@ public class Client {
 	private ChatClientThread clientThread;
 	
 	private ChatModel model;
-	private String name;
 	
-	public Client(String serverName, int serverPort, ChatModel model, String name) {
+	public Client(String serverName, int serverPort, ChatModel model) {
 		this.model = model;
-		this.name = name;
 		System.out.println("connecting. please wait...");
 		try {
 			socket = new Socket(serverName, serverPort);

@@ -19,7 +19,7 @@ public class ChatModel {
 	public ChatModel(String name) throws IOException {
 		this.name = name;
 		String hostName = InetAddress.getLocalHost().getHostName();
-		client = new Client(hostName, Constants.PORT_NUMBER, this, name);
+		client = new Client(hostName, Constants.PORT_NUMBER, this);
 		chatHistory = FXCollections.observableArrayList();
 	}
 	
