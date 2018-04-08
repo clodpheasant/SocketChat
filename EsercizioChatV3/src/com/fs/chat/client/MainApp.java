@@ -40,6 +40,7 @@ public class MainApp extends Application {
 		// setting up the scene
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 
