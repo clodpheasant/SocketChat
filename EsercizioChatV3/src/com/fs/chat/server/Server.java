@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fs.chat.Constants;
 
 public class Server implements Runnable {
 	
-	private ChatServerThread[] serverThreads = new ChatServerThread[50];
+	//private ServerThread[] serverThreads = new ServerThread[50];
+	private Map<Integer, ServerThread> serverThreads;
 	private ServerSocket server;
 	private Thread thread;
 	private int clientsCount = 0;
@@ -22,6 +25,7 @@ public class Server implements Runnable {
 			System.out.println("binding to port: " + port);
 			server = new ServerSocket(port);
 			System.out.println("server started: " + server);
+			serverThreads = new HashMap<>();
 			this.start();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -46,19 +50,19 @@ public class Server implements Runnable {
 		thread = null;
 	}
 	
-	private int findClient(int ID) {
+	/*private int findClient(int ID) {
 		for (int i = 0; i < clientsCount; i++) {
 			if (serverThreads[i].getID() == ID) {
 				return i;
 			}
 		}
 		return -1;
-	}
+	}*/
 	
 	public synchronized void remove(int ID) {
-		int i = findClient(ID);
+		/*int i = findClient(ID);
 		if (i >= 0) {
-			ChatServerThread toBeRemoved = serverThreads[i];
+			ServerThread toBeRemoved = serverThreads[i];
 			System.out.println("removing client " + ID + " at " + i);
 			if (i > clientsCount - 1) {
 				for (int j = i + 1; j < clientsCount; j++) {
@@ -72,27 +76,43 @@ public class Server implements Runnable {
 				System.out.println("error closing");
 				e.printStackTrace();
 			}
+		}*/
+		
+		ServerThread toBeRemoved = serverThreads.get(ID);
+		if (toBeRemoved != null) {
+			System.out.println("removing client " + ID);
+			serverThreads.remove(ID);
+			clientsCount--;
+			try {
+				toBeRemoved.close();
+			} catch (IOException e) {
+				System.out.println("error closing");
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public synchronized void handle(int ID, String input) {
 		if (input.equals("bye")) {
-			serverThreads[findClient(ID)].send("bye");
+			serverThreads.get(ID).send("bye");
 			remove(ID);
 		} else {
 			String msg = input;
 			// adds message to chat history, to send it to newly connected clients
 			completeChatHistory.add(msg);
-			for (int i = 0; i < clientsCount; i++) {
+			/*for (int i = 0; i < clientsCount; i++) {
 				serverThreads[i].send(msg);
+			}*/
+			for (ServerThread sender : serverThreads.values()) {
+				sender.send(msg);
 			}
 		}
 	}
 	
 	private void addThread(Socket socket) {
-		if (clientsCount < serverThreads.length) {
+		/*if (clientsCount < serverThreads.length) {
 			System.out.println("client accepted: " + socket);
-			ChatServerThread serverThread = new ChatServerThread(this, socket);
+			ServerThread serverThread = new ServerThread(this, socket);
 			serverThreads[clientsCount] = serverThread;
 			try {
 				serverThread.open();
@@ -108,6 +128,22 @@ public class Server implements Runnable {
 			}
 		} else {
 			System.out.println("client refused: maximum of " + serverThreads.length + "reached");
+		}*/
+
+		System.out.println("client accepted: " + socket);
+		ServerThread tobeAdded = new ServerThread(this, socket);
+		serverThreads.put(socket.getPort(), tobeAdded);
+		try {
+			tobeAdded.open();
+			tobeAdded.start();
+			clientsCount++;
+			// sends all messages from history
+			for (String msg : completeChatHistory) {
+				tobeAdded.send(msg);
+			}
+		} catch (IOException e) {
+			System.out.println("error opening thread");
+			e.printStackTrace();
 		}
 	}
 	

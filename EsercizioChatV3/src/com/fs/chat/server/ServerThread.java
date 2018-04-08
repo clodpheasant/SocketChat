@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ChatServerThread extends Thread {
+public class ServerThread extends Thread {
 	
 	private Server server;
 	private Socket socket;
@@ -15,7 +15,7 @@ public class ChatServerThread extends Thread {
 	private ObjectOutputStream outStream;
 	private boolean run = true;
 
-	public ChatServerThread(Server server, Socket socket) {
+	public ServerThread(Server server, Socket socket) {
 		super();
 		this.server = server;
 		this.socket = socket;
