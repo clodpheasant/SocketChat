@@ -4,14 +4,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class ChatClientThread extends Thread {
+public class ClientThread extends Thread {
 
 	private Socket socket;
 	private Client client;
 	private ObjectInputStream inStream;
 	private boolean run = true;
 	
-	public ChatClientThread(Client client, Socket socket) {
+	public ClientThread(Client client, Socket socket) {
 		this.client = client;
 		this.socket = socket;
 		this.open();

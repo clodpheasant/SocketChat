@@ -13,7 +13,7 @@ public class Client {
 	private Thread thread;
 	private BufferedReader inStream;
 	private DataOutputStream outStream;
-	private ChatClientThread clientThread;
+	private ClientThread clientThread;
 	
 	private ChatModel model;
 	
@@ -56,14 +56,11 @@ public class Client {
 		inStream = new BufferedReader(new InputStreamReader(System.in));
 		outStream = new DataOutputStream(socket.getOutputStream());
 		if (thread == null) {
-			clientThread = new ChatClientThread(this, socket);
-			//thread = new Thread(this);
-			//thread.start();
+			clientThread = new ClientThread(this, socket);
 		}
 	}
 	
 	public void stop() {
-		//if (thread != null) thread = null;
 		try {
 			if (inStream != null) inStream.close();
 			if (outStream != null) outStream.close();
