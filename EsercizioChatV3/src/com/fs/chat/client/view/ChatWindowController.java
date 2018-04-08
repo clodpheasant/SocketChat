@@ -88,13 +88,14 @@ public class ChatWindowController {
 	
 	/**
 	 * When the send button is pressed the message is passed to the client,
-	 * that sends it to the server.
+	 * that sends it to the server. Scrolls to the bottom of the chat.
 	 */
 	@FXML
 	private void send() {
 		String msg = model.getName() + ": " + messageText.getText();
 		model.getClient().send(msg);
 		messageText.setText("");
+		chatHistory.scrollTo(model.getChatHistory().size());
 	}
 	
 	/**
