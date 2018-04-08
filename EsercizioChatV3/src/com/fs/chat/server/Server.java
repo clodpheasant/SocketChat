@@ -81,6 +81,7 @@ public class Server implements Runnable {
 			remove(ID);
 		} else {
 			String msg = input;
+			// adds message to chat history, to send it to newly connected clients
 			completeChatHistory.add(msg);
 			for (int i = 0; i < clientsCount; i++) {
 				serverThreads[i].send(msg);
@@ -97,6 +98,10 @@ public class Server implements Runnable {
 				serverThread.open();
 				serverThread.start();
 				clientsCount++;
+				// sends all messages from history
+				for (String msg : completeChatHistory) {
+					serverThread.send(msg);
+				}
 			} catch (IOException e) {
 				System.out.println("error opening thread");
 				e.printStackTrace();

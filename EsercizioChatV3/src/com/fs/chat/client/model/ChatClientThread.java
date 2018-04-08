@@ -1,14 +1,14 @@
 package com.fs.chat.client.model;
 
-import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 
 public class ChatClientThread extends Thread {
 
 	private Socket socket;
 	private Client client;
-	private DataInputStream inStream;
+	private ObjectInputStream inStream;
 	private boolean run = true;
 	
 	public ChatClientThread(Client client, Socket socket) {
@@ -20,7 +20,7 @@ public class ChatClientThread extends Thread {
 	
 	public void open() {
 		try {
-			inStream = new DataInputStream(socket.getInputStream());
+			inStream = new ObjectInputStream(socket.getInputStream());
 		} catch (IOException e) {
 			client.stop();
 			System.out.println("error getting input stream");
@@ -43,10 +43,13 @@ public class ChatClientThread extends Thread {
 	public void run() {
 		while (run) {
 			try {
-				client.handle(inStream.readUTF());
+				client.handle((String) inStream.readObject());
 			} catch (IOException e) {
 				client.stop();
 				System.out.println("error listening");
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				System.out.println("error handling input class");
 				e.printStackTrace();
 			}
 		}

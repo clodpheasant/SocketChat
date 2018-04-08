@@ -1,10 +1,9 @@
 package com.fs.chat.server;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class ChatServerThread extends Thread {
@@ -13,7 +12,7 @@ public class ChatServerThread extends Thread {
 	private Socket socket;
 	private int ID = -1;
 	private DataInputStream inStream;
-	private DataOutputStream outStream;
+	private ObjectOutputStream outStream;
 	private boolean run = true;
 
 	public ChatServerThread(Server server, Socket socket) {
@@ -25,7 +24,7 @@ public class ChatServerThread extends Thread {
 	
 	public void send(String message) {
 		try {
-			outStream.writeUTF(message);
+			outStream.writeObject(message);
 			outStream.flush();
 		} catch (IOException e) {
 			server.remove(ID);
@@ -48,7 +47,7 @@ public class ChatServerThread extends Thread {
 
 	public void open() throws IOException {
 		inStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-		outStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+		outStream = new ObjectOutputStream(socket.getOutputStream());
 	}
 
 	public void close() throws IOException {
