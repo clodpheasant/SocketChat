@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  * @author FS
  *
  */
-public class MainApp extends Application {
+public class ChatApp extends Application {
 	
 	private ChatModel model;
 	
@@ -42,7 +42,7 @@ public class MainApp extends Application {
 
 		// loading the FXML main view
 		FXMLLoader chatLoader = new FXMLLoader();
-		chatLoader.setLocation(MainApp.class.getResource("view/ChatWindow.fxml"));
+		chatLoader.setLocation(ChatApp.class.getResource("view/ChatWindow.fxml"));
 		root.setCenter(chatLoader.load());
 		
 		// getting the controllers and hooking up the model
