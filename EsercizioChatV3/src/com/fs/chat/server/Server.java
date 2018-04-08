@@ -59,6 +59,12 @@ public class Server implements Runnable {
 				System.out.println("error closing");
 				e.printStackTrace();
 			}
+			
+			String goodBye = "someone left :(";
+			completeChatHistory.add(goodBye);
+			for (ServerThread sender : serverThreads.values()) {
+				sender.send(goodBye);
+			}
 		}
 	}
 	
@@ -73,11 +79,19 @@ public class Server implements Runnable {
 	
 	private void addThread(Socket socket) {
 		System.out.println("client accepted: " + socket);
+		
+		String welcome = "someone new! :)";
+		completeChatHistory.add(welcome);
+		for (ServerThread sender : serverThreads.values()) {
+			sender.send(welcome);
+		}
+		
 		ServerThread tobeAdded = new ServerThread(this, socket);
 		serverThreads.put(socket.getPort(), tobeAdded);
 		try {
 			tobeAdded.open();
 			tobeAdded.start();
+			
 			// sends all messages from history
 			for (String msg : completeChatHistory) {
 				tobeAdded.send(msg);

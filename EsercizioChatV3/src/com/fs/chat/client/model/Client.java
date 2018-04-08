@@ -43,13 +43,8 @@ public class Client {
 	}
 	
 	public void handle(String message) {
-		if (message.equals("bye")) {
-			System.out.println("buh bye - hit return to exit");
-			this.stop();
-		} else {
-			System.out.println(message);
-			model.updateChatHistory(message);
-		}
+		System.out.println(message);
+		model.updateChatHistory(message);
 	}
 	
 	private void start() throws IOException {
