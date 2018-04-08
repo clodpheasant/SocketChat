@@ -1,7 +1,14 @@
 package com.fs.chat;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Random;
 
+/**
+ * Useful constants and methods used throughout the app
+ * @author FS
+ *
+ */
 public class Constants {
 	
 	public static final int PORT_NUMBER = 8891;
@@ -15,10 +22,14 @@ public class Constants {
 	public static final String WELCOME = "someone new! :)";
 	public static final String GOODBYE = "someone left :(";
 	
-	public static final String getName() {
+	public static String getRandomName() {
 		return adjectives[r.nextInt(adjectives.length)]
 				+ names[r.nextInt(names.length)]
 				+ (r.nextInt(100)+1);
+	}
+	
+	public static String getHostName() throws UnknownHostException {
+		return InetAddress.getLocalHost().getHostName();
 	}
 	
 }

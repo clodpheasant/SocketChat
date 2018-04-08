@@ -10,6 +10,14 @@ import java.util.Map;
 
 import com.fs.chat.Constants;
 
+/**
+ * The chat server, listens to messages and distributes them to the clients, spawining
+ * dedicated threads. It holds the complete chat history, to distribute it to newly
+ * connected clients.
+ * Sends welcome and goodbye messages when users connect and disconnect.
+ * @author FS
+ *
+ */
 public class Server implements Runnable {
 	
 	private Map<Integer, ServerThread> serverThreads;
@@ -18,6 +26,10 @@ public class Server implements Runnable {
 	
 	private List<String> completeChatHistory;
 	
+	/**
+	 * Create a server on the port received in input
+	 * @param port
+	 */
 	public Server(int port) {
 		try {
 			System.out.println("binding to port: " + port);
@@ -30,6 +42,10 @@ public class Server implements Runnable {
 		}
 	}
 	
+	/**
+	 * Waits for client connections. When it finds one it spawns
+	 * a child thread dedicated to it.
+	 */
 	public void run() {
 		while (thread != null) {
 			try {
@@ -44,10 +60,20 @@ public class Server implements Runnable {
 		}
 	}
 	
+	/**
+	 * Kills the tread
+	 */
 	private void stop() {
 		thread = null;
 	}
 	
+	/**
+	 * Removes a client from the connected clients list, identified by the server
+	 * thread associated to it, in order not to listen to
+	 * its messages and not to distribute messages to it. <br>
+	 * A goodbye message is sent to the remaining clients.
+	 * @param ID the id of the server thread associated to the client to be removed
+	 */
 	public synchronized void remove(int ID) {
 		ServerThread toBeRemoved = serverThreads.get(ID);
 		if (toBeRemoved != null) {
@@ -67,15 +93,26 @@ public class Server implements Runnable {
 		}
 	}
 	
+	/**
+	 * Handles a message from a client and distributes it to all the server
+	 * threads, to send it to everyone.
+	 * @param ID the ID of the server thread
+	 * @param input the message to be sent
+	 */
 	public synchronized void handle(int ID, String input) {
-		String msg = input;
+		String message = input;
 		// adds message to chat history, to send it to newly connected clients
-		completeChatHistory.add(msg);
+		completeChatHistory.add(message);
 		for (ServerThread sender : serverThreads.values()) {
-			sender.send(msg);
+			sender.send(message);
 		}
 	}
 	
+	/**
+	 * Spawns a new server thread dedicated to a client. <br />
+	 * A welcome message is sent to the chat.
+	 * @param socket the socket of the client that is connecting to the server
+	 */
 	private void addThread(Socket socket) {
 		System.out.println("client accepted: " + socket);
 		
@@ -100,6 +137,9 @@ public class Server implements Runnable {
 		}
 	}
 	
+	/**
+	 * Starts the main server thread and initializes chat history
+	 */
 	public void start() {
 		completeChatHistory = new ArrayList<>();
 		if (thread == null) {
@@ -109,6 +149,7 @@ public class Server implements Runnable {
 	}
 
 	public static void main(String[] args) {
+		// starting the server
 		new Server(Constants.PORT_NUMBER);
 	}
 

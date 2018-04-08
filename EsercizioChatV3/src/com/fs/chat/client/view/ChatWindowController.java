@@ -7,12 +7,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
+/**
+ * Handles the data provided by the model and shows it on the UI of the chat window.
+ * Renders messages according to their type
+ * @author FS
+ *
+ */
 public class ChatWindowController {
 
 	private ChatModel model;
@@ -22,7 +26,11 @@ public class ChatWindowController {
 
 	@FXML
 	private TextField messageText;
-
+	
+	/**
+	 * Hooks up the model.
+	 * @param model
+	 */
 	public void initModel(ChatModel model) {
 		// ensure model is only set once:
 		if (this.model != null) {
@@ -46,6 +54,7 @@ public class ChatWindowController {
 							text.wrappingWidthProperty().bind(list.widthProperty().subtract(20));
 							text.textProperty().bind(itemProperty());
 							
+							// the message gets a different color according to its type
 							if (message.equals(Constants.WELCOME)) {
 								text.setFill(Color.GREEN);
 							} else if (message.equals(Constants.GOODBYE)) {
@@ -74,7 +83,11 @@ public class ChatWindowController {
 		// populates listview
 		chatHistory.setItems(model.getChatHistory());
 	}
-
+	
+	/**
+	 * When the send button is pressed the message is passed to the client,
+	 * that sends it to the server.
+	 */
 	@FXML
 	private void send() {
 		String msg = model.getName() + ": " + messageText.getText();
@@ -82,6 +95,9 @@ public class ChatWindowController {
 		messageText.setText("");
 	}
 	
+	/**
+	 * Closes spawned threads in order to quit the application correctly.
+	 */
 	public void closeThreads() {
 		model.getClient().stop();
 	}

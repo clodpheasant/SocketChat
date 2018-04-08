@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
+/**
+ * The spawned thread that listens to new messages
+ * @author FS
+ *
+ */
 public class ClientThread extends Thread {
 
 	private Socket socket;
@@ -11,6 +16,11 @@ public class ClientThread extends Thread {
 	private ObjectInputStream inStream;
 	private boolean run = true;
 	
+	/**
+	 * Creates and runs the new thread.
+	 * @param client the parent client that spawned the server
+	 * @param socket the socket that receives the message
+	 */
 	public ClientThread(Client client, Socket socket) {
 		this.client = client;
 		this.socket = socket;
@@ -19,6 +29,9 @@ public class ClientThread extends Thread {
 		this.start();
 	}
 	
+	/**
+	 * Opens up the input stream.
+	 */
 	public void open() {
 		try {
 			inStream = new ObjectInputStream(socket.getInputStream());
@@ -29,6 +42,9 @@ public class ClientThread extends Thread {
 		}
 	}
 	
+	/**
+	 * Closes open resources
+	 */
 	public void close() {
 		try {
 			if (inStream != null) {
@@ -41,9 +57,13 @@ public class ClientThread extends Thread {
 		}
 	}
 	
+	/**
+	 * Listens to the input stream for new messages.
+	 */
 	public void run() {
 		while (run) {
 			try {
+				// pass the read message to the client proper
 				client.handle((String) inStream.readObject());
 			} catch (IOException e) {
 				client.stop();
