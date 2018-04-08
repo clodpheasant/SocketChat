@@ -19,8 +19,10 @@ public class MainApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws IOException, URISyntaxException {
+		String name = Constants.getName();
+		
 		// setting up the stage
-		primaryStage.setTitle("Chat");
+		primaryStage.setTitle("Chat - " + name);
 
 		// root to attach the various elements of the UI
 		BorderPane root = new BorderPane();
@@ -32,7 +34,7 @@ public class MainApp extends Application {
 		
 		// getting the controllers and hooking up the model
 		ChatWindowController chatWindowController = chatLoader.getController();
-		model = new ChatModel();
+		model = new ChatModel(name);
 		chatWindowController.initModel(model);
 
 		// setting up the scene

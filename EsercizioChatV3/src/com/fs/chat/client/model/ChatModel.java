@@ -12,12 +12,14 @@ import javafx.collections.ObservableList;
 public class ChatModel {
 	
 	private Client client;
+	private String name;
 
 	private final ObservableList<String> chatHistory;
 	
-	public ChatModel() throws IOException {
+	public ChatModel(String name) throws IOException {
+		this.name = name;
 		String hostName = InetAddress.getLocalHost().getHostName();
-		client = new Client(hostName, Constants.PORT_NUMBER, this);
+		client = new Client(hostName, Constants.PORT_NUMBER, this, name);
 		chatHistory = FXCollections.observableArrayList();
 	}
 	
@@ -35,6 +37,10 @@ public class ChatModel {
 	
 	public ObservableList<String> getChatHistory() {
 		return chatHistory;
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 }

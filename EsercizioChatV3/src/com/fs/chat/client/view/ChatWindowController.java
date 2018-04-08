@@ -29,7 +29,8 @@ public class ChatWindowController {
 	
 	@FXML
 	private void send() {
-		model.getClient().send(messageText.getText());
+		String msg = model.getName() + ": " + messageText.getText();
+		model.getClient().send(msg);
 		messageText.setText("");
 	}
 

@@ -80,7 +80,7 @@ public class Server implements Runnable {
 			serverThreads[findClient(ID)].send("bye");
 			remove(ID);
 		} else {
-			String msg = ID + " says: " + input;
+			String msg = input;
 			completeChatHistory.add(msg);
 			for (int i = 0; i < clientsCount; i++) {
 				serverThreads[i].send(msg);
