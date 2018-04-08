@@ -60,10 +60,9 @@ public class Server implements Runnable {
 				e.printStackTrace();
 			}
 			
-			String goodBye = "someone left :(";
-			completeChatHistory.add(goodBye);
+			completeChatHistory.add(Constants.GOODBYE);
 			for (ServerThread sender : serverThreads.values()) {
-				sender.send(goodBye);
+				sender.send(Constants.GOODBYE);
 			}
 		}
 	}
@@ -80,10 +79,9 @@ public class Server implements Runnable {
 	private void addThread(Socket socket) {
 		System.out.println("client accepted: " + socket);
 		
-		String welcome = "someone new! :)";
-		completeChatHistory.add(welcome);
+		completeChatHistory.add(Constants.WELCOME);
 		for (ServerThread sender : serverThreads.values()) {
-			sender.send(welcome);
+			sender.send(Constants.WELCOME);
 		}
 		
 		ServerThread tobeAdded = new ServerThread(this, socket);
