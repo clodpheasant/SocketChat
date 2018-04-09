@@ -99,7 +99,7 @@ public class Server implements Runnable {
 	 * @param ID the ID of the server thread
 	 * @param input the message to be sent
 	 */
-	public synchronized void handle(int ID, String input) {
+	public synchronized void handleMessage(int ID, String input) {
 		String message = input;
 		// adds message to chat history, to send it to newly connected clients
 		completeChatHistory.add(message);

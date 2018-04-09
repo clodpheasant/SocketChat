@@ -14,14 +14,14 @@ public class Constants {
 	public static final int PORT_NUMBER = 8891;
 	
 	public static final Random r = new Random();
-	public static final String[] adjectives = {"Good", "Dreamy", "Stubborn", "Sleepy", "Cute",
-			"Playful", "Hyperactive", "Generous"};
+	public static final String[] adjectives = {"Handsome", "Dreamy", "Stubborn", "Sleepy", "Cute",
+			"Playful", "Hyperactive", "Generous", "Loving", "Considerate", "Flamboyant"};
 	public static final String[] names = {"Dog", "Cat", "Giraffe", "Hippo", "Lion", "Monkey",
-			"Capibara", "Cow", "Goose", "Pidgeon"};
+			"Capibara", "Cow", "Goose", "Pidgeon", "Squid", "Whale", "Chicken"};
 	
 	public static final String WELCOME = "someone new! :)";
 	public static final String GOODBYE = "someone left :(";
-	public static final String NO_CONNECTION = "Couldn't connect to the server.";
+	public static final String NO_CONNECTION = "couldn't connect to the server.";
 	
 	public static String getRandomName() {
 		return adjectives[r.nextInt(adjectives.length)]

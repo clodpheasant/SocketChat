@@ -64,7 +64,7 @@ public class ClientThread extends Thread {
 		while (run) {
 			try {
 				// pass the read message to the client proper
-				client.handle((String) inStream.readObject());
+				client.handleMessage((String) inStream.readObject());
 			} catch (IOException e) {
 				client.stop();
 			} catch (ClassNotFoundException e) {

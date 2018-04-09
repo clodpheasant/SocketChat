@@ -76,7 +76,7 @@ public class Client {
 	 * @param message
 	 *            the message received
 	 */
-	public void handle(String message) {
+	public void handleMessage(String message) {
 		System.out.println(message);
 		model.updateChatHistory(message);
 	}

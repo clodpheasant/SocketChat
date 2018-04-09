@@ -55,7 +55,7 @@ public class ServerThread extends Thread {
 		System.out.println("server thread " + ID + " running.");
 		while (run) {
 			try {
-				server.handle(ID, inStream.readUTF());
+				server.handleMessage(ID, inStream.readUTF());
 			} catch (IOException e) {
 				server.remove(ID);
 				run = false;
