@@ -14,9 +14,9 @@ public class Constants {
 	public static final int PORT_NUMBER = 8891;
 	
 	public static final Random r = new Random();
-	public static final String[] adjectives = {"Handsome", "Dreamy", "Stubborn", "Sleepy", "Cute",
+	private static final String[] adjectives = {"Handsome", "Dreamy", "Stubborn", "Sleepy", "Cute",
 			"Playful", "Hyperactive", "Generous", "Loving", "Considerate", "Flamboyant"};
-	public static final String[] names = {"Dog", "Cat", "Giraffe", "Hippo", "Lion", "Monkey",
+	private static final String[] names = {"Dog", "Cat", "Giraffe", "Hippo", "Lion", "Monkey",
 			"Capibara", "Cow", "Goose", "Pidgeon", "Squid", "Whale", "Chicken"};
 	
 	public static final String WELCOME = "someone new! :)";
